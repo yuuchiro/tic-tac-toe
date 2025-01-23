@@ -23,33 +23,32 @@ const logGameBoard = () => {
   console.log(board);
 };
 
-const checkCol = (i) =>
+const checkColumn = (i) =>
   gameBoard[0][i] !== "-" &&
   gameBoard[0][i] == gameBoard[1][i] &&
   gameBoard[1][i] == gameBoard[2][i];
 
+const checkRow = (i) =>
+  gameBoard[i][1] !== "-" &&
+  gameBoard[i][0] == gameBoard[i][1] &&
+  gameBoard[i][1] == gameBoard[i][2];
+
+const checkDiagonals = () =>
+  (gameBoard[1][1] !== "-" &&
+    gameBoard[0][0] == gameBoard[1][1] &&
+    gameBoard[1][1] == gameBoard[2][2]) ||
+  (gameBoard[1][1] !== "-" &&
+    gameBoard[2][0] == gameBoard[1][1] &&
+    gameBoard[1][1] == gameBoard[0][2]);
+
 const checkWinner = () => {
   for (let i = 0; i < 3; i++) {
-    if (checkCol(i)) winner = currentPlayer;
+    if (checkColumn(i)) winner = currentPlayer;
 
-    //checking rows
-    if (
-      gameBoard[i][1] !== "-" &&
-      gameBoard[i][0] == gameBoard[i][1] &&
-      gameBoard[i][1] == gameBoard[i][2]
-    )
-      winner = currentPlayer;
+    if (checkRow(i)) winner = currentPlayer;
   }
 
-  if (
-    (gameBoard[1][1] !== "-" &&
-      gameBoard[0][0] == gameBoard[1][1] &&
-      gameBoard[1][1] == gameBoard[2][2]) ||
-    (gameBoard[1][1] !== "-" &&
-      gameBoard[2][0] == gameBoard[1][1] &&
-      gameBoard[1][1] == gameBoard[0][2])
-  )
-    winner = currentPlayer;
+  if (checkDiagonals()) winner = currentPlayer;
 
   //checking for tie
   if (moveCouner == 9 && !winner) {
